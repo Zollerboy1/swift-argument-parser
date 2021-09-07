@@ -1,4 +1,4 @@
-// swift-tools-version:5.4
+// swift-tools-version:5.5
 //===----------------------------------------------------------*- swift -*-===//
 //
 // This source file is part of the Swift Argument Parser open source project
@@ -14,6 +14,9 @@ import PackageDescription
 
 var package = Package(
     name: "swift-argument-parser",
+    platforms: [
+        .macOS(.v12)
+    ],
     products: [
         .library(
             name: "ArgumentParser",
@@ -24,12 +27,11 @@ var package = Package(
         .target(
             name: "ArgumentParser",
             dependencies: [],
-            swiftSettings: [
-                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"]),
-            ]),
+            exclude: ["CMakeLists.txt"]),
         .target(
             name: "ArgumentParserTestHelpers",
-            dependencies: ["ArgumentParser"]),
+            dependencies: ["ArgumentParser"],
+            exclude: ["CMakeLists.txt"]),
 
         .executableTarget(
             name: "roll",
@@ -54,10 +56,12 @@ var package = Package(
 
         .testTarget(
             name: "ArgumentParserEndToEndTests",
-            dependencies: ["ArgumentParser", "ArgumentParserTestHelpers"]),
+            dependencies: ["ArgumentParser", "ArgumentParserTestHelpers"],
+            exclude: ["CMakeLists.txt"]),
         .testTarget(
             name: "ArgumentParserUnitTests",
-            dependencies: ["ArgumentParser", "ArgumentParserTestHelpers"]),
+            dependencies: ["ArgumentParser", "ArgumentParserTestHelpers"],
+            exclude: ["CMakeLists.txt"]),
         .testTarget(
             name: "ArgumentParserExampleTests",
             dependencies: ["ArgumentParserTestHelpers"]),
@@ -69,5 +73,6 @@ var package = Package(
 package.targets.append(
     .testTarget(
         name: "ArgumentParserPackageManagerTests",
-        dependencies: ["ArgumentParser", "ArgumentParserTestHelpers"]))
+        dependencies: ["ArgumentParser", "ArgumentParserTestHelpers"],
+        exclude: ["CMakeLists.txt"]))
 #endif
